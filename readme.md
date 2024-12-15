@@ -17,6 +17,9 @@ Additionally, the project includes a `datasets` folder containing necessary data
 
 #### Step 1: Install Git LFS
 Git LFS (Large File Storage) is necessary to handle large files in the `datasets` folder. Install it by following these steps:
+- **On Windows:**
+
+Download the Git LFS installer from the official Git LFS website.
 
 - **On Linux/macOS:**
   ```bash
@@ -63,6 +66,8 @@ Once the setup is complete, activate the virtual environment to run the project:
 You should see the virtual environment's name (e.g., `.venv`) displayed in the terminal prompt.
 
 #### Step 5: Run Project Scripts
+
+Run cells in `src/split_datasets.ipynb` file to split datasets
 
 #### Step 6: Deactivate the Virtual Environment
 When finished, deactivate the virtual environment using:
