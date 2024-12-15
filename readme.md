@@ -3,16 +3,27 @@
 ## Introduction
 This project implements a discrete speech recognition system based on Hidden Markov Models (HMM). The `setup.py` file is used to set up the development environment, including creating a virtual environment (`.venv`) and installing the required libraries from `requirements.txt`.
 
+Additionally, the project includes a `datasets` folder containing necessary data files. Due to their large size, the data is managed using Git Large File Storage (Git LFS).
+
 ## Usage Guide
 
 ### 1. System Requirements
 - **Python**: Version 3.6 or higher (check using `python --version`).
 - **Pip**: Python's package manager (ensure it is installed).
+- **Git LFS**: Required to manage and clone large files in the repository.
 - **Access Rights**: If using Windows, you may need to run commands with Administrator privileges.
 
 ### 2. Steps to Run
 
-#### Step 1: Clone the Project
+#### Step 1: Install Git LFS
+Git LFS (Large File Storage) is necessary to handle large files in the `datasets` folder. Install it by following these steps:
+
+- **On Linux/macOS:**
+  ```bash
+  sudo apt update && sudo apt install git-lfs
+  git lfs install
+
+#### Step 2: Clone the Project
 Download the project source code to your machine:
 ```bash
 # Clone via Git
@@ -26,7 +37,7 @@ Navigate to the project directory:
 cd discrete-speech-recognition-using-hmm
 ```
 
-#### Step 2: Run `setup.py`
+#### Step 3: Run `setup.py`
 Execute the `setup.py` file to create the virtual environment and install the libraries:
 ```bash
 python setup.py
@@ -36,7 +47,7 @@ python setup.py
 1. Create a virtual environment in the `.venv` directory.
 2. Install the libraries listed in `requirements.txt` into the virtual environment.
 
-#### Step 3: Activate the Virtual Environment
+#### Step 4: Activate the Virtual Environment
 Once the setup is complete, activate the virtual environment to run the project:
 
 - **On Windows:**
@@ -51,9 +62,9 @@ Once the setup is complete, activate the virtual environment to run the project:
 
 You should see the virtual environment's name (e.g., `.venv`) displayed in the terminal prompt.
 
-#### Step 4: Run Project Scripts
+#### Step 5: Run Project Scripts
 
-#### Step 5: Deactivate the Virtual Environment
+#### Step 6: Deactivate the Virtual Environment
 When finished, deactivate the virtual environment using:
 ```bash
 deactivate
