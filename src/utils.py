@@ -12,7 +12,7 @@ def get_word_by_id(word_id):
         # Search for the word and return it
         for entry in data["words"]:
             if entry["id"] == word_id:
-                return entry["word"]
+                return entry
             
         # If word not found, return None or raise an exception
         return None  # Word not found
@@ -20,7 +20,7 @@ def get_word_by_id(word_id):
         print(f"Error: {e}")
         return None
     
-def get_id_by_word(word: str) -> int:
+def get_word(word: str) -> None:
     try:
         with open(word_path, encoding='utf-8') as f:
             data = json.load(f)
@@ -28,21 +28,24 @@ def get_id_by_word(word: str) -> int:
         # Search for the word and return its ID
         for entry in data["words"]:
             if entry["word"] == word:
-                return entry["id"]
+                return entry
 
         # If word not found, return -1 or raise an exception
-        return -1  # Word not found
+        return None  # Word not found
     except Exception as e:
         print(f"Error: {e}")
-        return -1
+        return None
 
-def get_all_words():
+def get_all_words(tiny=False) -> list:
     try:
         with open(word_path, encoding='utf-8') as f:
             data = json.load(f)
         
         # Return a list of all words
-        return [entry["word"] for entry in data["words"]]
+        if tiny:
+            return [entry["word"] for entry in data["words"]]
+        else:
+            return data["words"]
     except Exception as e:
         print(f"Error: {e}")
         return None
