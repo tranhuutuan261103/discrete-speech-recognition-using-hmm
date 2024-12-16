@@ -45,7 +45,72 @@ class HMMRecognition:
         print(self.class_names[predict_word])
         print('Predicted word:', get_word(self.class_names[predict_word]))
 
+    @staticmethod
+    def record(record_folder = 'temp/record'):
+        os.makedirs(record_folder, exist_ok=True)
+
+        CHUNK = 1024
+        FORMAT = pyaudio.paInt16
+        CHANNELS = 1
+        RATE = 22050
+        RECORD_SECONDS = 2
+
+        p = pyaudio.PyAudio()
+
+        stream = p.open(format=FORMAT,
+                        channels=CHANNELS,
+                        rate=RATE,
+                        input=True,
+                        frames_per_buffer=CHUNK)
+
+        frames = []
+
+        print('recording ...')
+        for i in range(0, int(RATE / CHUNK * RECORD_SECONDS)):
+            data = stream.read(CHUNK)
+            frames.append(data)
+
+        print('stopped record!')
+        stream.stop_stream()
+        stream.close()
+        p.terminate()
+
+        now_str = time.strftime("%Y%m%d_%H%M%S")
+
+        record_path = f"{record_folder}/audio_{now_str}.wav"
+
+        wf = wave.open(record_path, 'wb')
+        wf.setnchannels(CHANNELS)
+        wf.setsampwidth(p.get_sample_size(FORMAT))
+        wf.setframerate(RATE)
+        wf.writeframes(b''.join(frames))
+        wf.close()
+
+        print('record_path:', record_path)
+
+        trimmed_path = HMMRecognition.strim_audio(record_path)
+
+        return record_path, trimmed_path
+    
+    @staticmethod
+    def strim_audio(record_path: str):
+        audio = AudioSegment.from_file(record_path, format='wav')
+        start_trim = HMMRecognition.detect_leading_silence(audio)
+        end_trim = HMMRecognition.detect_leading_silence(audio.reverse())
+
+        duration = len(audio)
+        trimmed_sound = audio[start_trim:duration - end_trim]
+
+        trimmed_path = record_path.replace('record', 'trimmed')
+        os.makedirs(os.path.dirname(trimmed_path), exist_ok=True)
+        trimmed_sound.export(trimmed_path, format='wav')
+
+        return trimmed_path
+
 if __name__ == '__main__':
     hmm_reg = HMMRecognition()
     word = get_word('bai')
     hmm_reg.predict(file_name=f'datasets/split/{word["word"]}/A{str(word["id"]).zfill(2)}.wav')
+
+    # record_path, trimmed_path = HMMRecognition.record()
+    # hmm_reg.predict(trimmed_path)
