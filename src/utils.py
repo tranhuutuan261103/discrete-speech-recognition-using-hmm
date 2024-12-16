@@ -1,6 +1,8 @@
+import os
 import json
 
-word_path = '../words.json'
+curent_path = os.path.dirname(os.path.abspath(__file__))
+word_path = os.path.join(curent_path, '../words.json')
 
 def get_word_by_id(word_id):
     try:
