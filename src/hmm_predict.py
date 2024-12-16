@@ -7,13 +7,13 @@ import numpy as np
 import pyaudio
 from pydub import AudioSegment
 import preprocessing
-from utils import get_all_words
+from utils import get_all_words, get_word
 
 class HMMRecognition:
     def __init__(self):
         self.model = {}
 
-        self.class_names = get_all_words()
+        self.class_names = get_all_words(tiny=True)
         self.audio_format = 'wav'
 
         self.model_path = 'models/demo'
@@ -43,7 +43,9 @@ class HMMRecognition:
         print('scores', scores)
         predict_word = np.argmax(scores)
         print(self.class_names[predict_word])
+        print('Predicted word:', get_word(self.class_names[predict_word]))
 
 if __name__ == '__main__':
     hmm_reg = HMMRecognition()
-    hmm_reg.predict(file_name='datasets/split/co/A34.wav')
+    word = get_word('bai')
+    hmm_reg.predict(file_name=f'datasets/split/{word["word"]}/A{str(word["id"]).zfill(2)}.wav')
