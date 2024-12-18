@@ -3,6 +3,9 @@ import math
 import librosa
 import numpy as np
 
+def get_energy(y, sr, win_length, hop_length):
+    energy = librosa.feature.rms(y=y, frame_length=win_length, hop_length=hop_length)
+    return energy
 
 def get_mfcc(file_path):
     y, sr = librosa.load(file_path)  # read .wav file
@@ -12,6 +15,16 @@ def get_mfcc(file_path):
     mfcc = librosa.feature.mfcc(
         y=y, sr=sr, n_mfcc=12, n_fft=1024,
         hop_length=hop_length, win_length=win_length)
+    
+    energy = get_energy(y, sr, win_length, hop_length)
+    if energy.shape[1] < mfcc.shape[1]:
+        energy = np.pad(energy, ((0, 0), (0, mfcc.shape[1] - energy.shape[1])), mode='constant')
+    elif energy.shape[1] > mfcc.shape[1]:
+        mfcc = np.pad(mfcc, ((0, 0), (0, energy.shape[1] - mfcc.shape[1])), mode='constant')
+
+    # add specific energy to MFCC
+    mfcc = np.vstack((mfcc, energy))
+    
     # subtract mean from mfcc --> normalize mfcc
     mfcc = mfcc - np.mean(mfcc, axis=1).reshape((-1, 1))
     # delta feature 1st order and 2nd order
