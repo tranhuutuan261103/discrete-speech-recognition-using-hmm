@@ -21,7 +21,7 @@ def get_mfcc(file_path):
 
     
     # Thêm thành phần năng lượng vào MFCC
-    # mfcc = np.vstack((mfcc, energy))
+    mfcc = np.vstack((mfcc, energy))
 
     # Chuẩn hóa MFCC bằng cách trừ đi giá trị trung bình
     mfcc = mfcc - np.mean(mfcc, axis=1).reshape((-1, 1))
