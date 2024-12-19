@@ -163,4 +163,5 @@ cython_debug/
 # Custom
 datasets/*
 !datasets/raw/
+datasets_testing/*
 temp
